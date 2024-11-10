@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { 
+import {
   FileSpreadsheet, Users, MapPin, Mail, Phone,
   Smartphone, PhoneCall, AtSign, Briefcase, Linkedin
 } from 'lucide-react';
@@ -24,7 +24,7 @@ function App() {
       personalEmails: contacts.filter(c => c.PERSONAL_EMAIL?.trim()).length,
       businessEmails: contacts.filter(c => c.BUSINESS_EMAIL?.trim()).length,
       mobilePhones: contacts.filter(c => c.MOBILE_PHONE?.trim()).length,
-      directPhones: contacts.filter(c => c.DIRECT_PHONE?.trim()).length,
+      // directPhones: contacts.filter(c => c.DIRECT_PHONE?.trim()).length,
       linkedin: contacts.filter(c => c.LINKEDIN_URL?.trim()).length,
     };
   }, [contacts]);
@@ -81,12 +81,12 @@ function App() {
                   total={contacts.length}
                   icon={Smartphone}
                 />
-                <ContactMethodCard
+                {/* <ContactMethodCard
                   title="Direct Numbers"
                   count={contactMethods?.directPhones || 0}
                   total={contacts.length}
                   icon={PhoneCall}
-                />
+                /> */}
                 <ContactMethodCard
                   title="Personal Emails"
                   count={contactMethods?.personalEmails || 0}
