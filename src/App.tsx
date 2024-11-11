@@ -9,7 +9,7 @@ import StatCard from './components/StatCard';
 import ContactMethodCard from './components/ContactMethodCard';
 import { processData, calculateStats } from './utils/chartHelpers';
 import type { Contact } from './types';
-import { Briefcase2 } from 'lucide-react';  // For the icon
+import { Briefcase } from 'lucide-react';  // Replace Briefcase2 with Briefcase
 
 
 function App() {
@@ -102,7 +102,7 @@ function App() {
                 <div className="bg-white rounded-lg shadow p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-sm font-medium text-gray-900">Top Job Titles</h3>
-                    <Briefcase2 className="h-5 w-5 text-gray-400" />
+                    <Briefcase className="h-5 w-5 text-gray-400" />
                   </div>
                   <div className="space-y-2">
                     {console.log('Top Jobs:', topJobs)}
