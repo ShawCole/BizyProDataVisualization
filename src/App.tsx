@@ -116,31 +116,37 @@ function App() {
                   title="City Distribution"
                   data={processData(contacts, 'PERSONAL_CITY')}
                   type="doughnut"
+                  titleFontSize={15}
                 />
                 <ChartCard
                   title="Age Range Distribution"
                   data={processData(contacts, 'AGE_RANGE')}
                   type="doughnut"
+                  titleFontSize={15}
                 />
                 <ChartCard
                   title="Income Range Distribution"
                   data={processData(contacts, 'INCOME_RANGE')}
                   type="doughnut"
+                  titleFontSize={10}
                 />
                 <ChartCard
                   title="Credit Rating Distribution"
                   data={processData(contacts, 'SKIPTRACE_CREDIT_RATING')}
                   type="doughnut"
+                  titleFontSize={15}
                 />
                 <ChartCard
                   title="Net Worth Distribution"
                   data={processData(contacts, 'NET_WORTH')}
                   type="doughnut"
+                  titleFontSize={15}
                 />
                 <ChartCard
                   title="Gender Distribution"
                   data={processData(contacts, 'GENDER')}
                   type="doughnut"
+                  titleFontSize={15}
                 />
               </div>
             </section>

@@ -27,6 +27,7 @@ interface ChartCardProps {
   title: string;
   data: ChartData;
   type?: 'bar' | 'doughnut';
+  titleFontSize?: number;  // Add this new prop
 }
 
 const baseOptions = {
@@ -38,9 +39,6 @@ const baseOptions = {
       labels: {
         padding: 20,
         usePointStyle: true,
-        font: {
-          size: 10, // Reduce font size for legend labels
-        },
       },
     },
     tooltip: {
@@ -120,7 +118,12 @@ const doughnutOptions = {
   },
 };
 
-export default function ChartCard({ title, data, type = 'bar' }: ChartCardProps) {
+export default function ChartCard({
+  title,
+  data,
+  type = 'bar',
+  titleFontSize = 16  // Add default value
+}: ChartCardProps) {
   const options = {
     ...(type === 'bar' ? barOptions : doughnutOptions),
     plugins: {
@@ -130,7 +133,7 @@ export default function ChartCard({ title, data, type = 'bar' }: ChartCardProps)
         text: title,
         padding: { bottom: 20 },
         font: {
-          size: 16,
+          size: titleFontSize,  // Use the prop instead of hardcoded value
           weight: '500',
         },
       },
