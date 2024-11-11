@@ -13,41 +13,34 @@ const generateRandomColors = (count: number) => {
   return result;
 };
 
-export function processData(contacts: Contact[], field: keyof Contact) {
-  const data = contacts.reduce((acc, contact) => {
-    let value = contact[field]?.toString().trim() || 'Not Specified';
+export const processData = (contacts: Contact[], field: keyof Contact) => {
+  const counts: { [key: string]: number } = {};
 
-    // Remove dollar signs and commas for financial fields
-    if (['INCOME_RANGE', 'NET_WORTH'].includes(field)) {
-      value = value.replace(/[\$,]/g, '').trim();
-    }
-
-    acc[value] = (acc[value] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
-
-  const sortedEntries = Object.entries(data).sort((a, b) => {
-    if (a[0] === 'Not Specified') return 1;
-    if (b[0] === 'Not Specified') return -1;
-    return 0;
+  contacts.forEach(contact => {
+    const value = contact[field]?.toString().trim() || 'Unknown';
+    counts[value] = (counts[value] || 0) + 1;
   });
 
+  // Sort by count in descending order
+  const sortedEntries = Object.entries(counts)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 10); // Limit to top 10 for better visualization
+
+  const labels = sortedEntries.map(([label]) => label);
+  const data = sortedEntries.map(([, count]) => count);
+  const colors = generateRandomColors(labels.length);
+
   return {
-    labels: sortedEntries.map(([label]) => label),
+    labels,
     datasets: [{
-      data: sortedEntries.map(([, count]) => count),
-      backgroundColor: [
-        '#3B82F6', // blue-500
-        '#10B981', // emerald-500
-        '#F59E0B', // amber-500
-        '#EF4444', // red-500
-        '#8B5CF6', // violet-500
-        '#EC4899', // pink-500
-        '#6366F1', // indigo-500
-      ],
-    }],
+      label: field.toString().replace(/_/g, ' '),
+      data,
+      backgroundColor: colors.map(color => `${color}CC`), // Add transparency
+      borderColor: colors,
+      borderWidth: 1,
+    }]
   };
-}
+};
 
 export const calculateContactMethods = (contacts: Contact[]) => {
   const methods = {
