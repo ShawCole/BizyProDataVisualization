@@ -15,6 +15,9 @@ import { Briefcase2 } from 'lucide-react';  // For the icon
 function App() {
   const [contacts, setContacts] = useState<Contact[]>([]);
 
+  console.log('Contacts length:', contacts.length);
+  console.log('First contact:', contacts[0]);
+
   const stats = useMemo(() => {
     if (contacts.length === 0) return null;
     return calculateStats(contacts);
@@ -29,6 +32,13 @@ function App() {
       // directPhones: contacts.filter(c => c.DIRECT_PHONE?.trim()).length,
       linkedin: contacts.filter(c => c.LINKEDIN_URL?.trim()).length,
     };
+  }, [contacts]);
+
+  const topJobs = useMemo(() => {
+    if (contacts.length === 0) return [];
+    const result = getTopJobTitles(contacts, 5);
+    console.log('Top Jobs:', result);
+    return result;
   }, [contacts]);
 
   return (
@@ -95,24 +105,24 @@ function App() {
                     <Briefcase2 className="h-5 w-5 text-gray-400" />
                   </div>
                   <div className="space-y-2">
-                    {getTopJobTitles(contacts, 5).map((job, index, array) => {
-                      // Calculate the width percentage based on the highest count
+                    {console.log('Top Jobs:', topJobs)}
+                    {topJobs.map((job, index, array) => {
                       const maxCount = array[0].count;
                       const widthPercentage = (job.count / maxCount) * 100;
 
                       return (
-                        <div key={job.title} className="flex items-center justify-between">
-                          <div className="text-sm truncate flex-1 relative z-10" title={job.title}>
-                            <div
-                              className="absolute inset-y-0 left-0 bg-blue-100 -z-10"
-                              style={{ width: `${widthPercentage}%` }}
-                            />
-                            <span className="pl-1">
+                        <div key={job.title} className="relative p-2">
+                          <div
+                            className="absolute inset-y-0 left-0 bg-blue-100"
+                            style={{ width: `${widthPercentage}%` }}
+                          />
+                          <div className="flex justify-between relative z-10">
+                            <span className="text-sm">
                               {index + 1}. {job.title}
                             </span>
-                          </div>
-                          <div className="text-xs text-gray-500 ml-2">
-                            {job.count}
+                            <span className="text-xs text-gray-500">
+                              {job.count}
+                            </span>
                           </div>
                         </div>
                       );
