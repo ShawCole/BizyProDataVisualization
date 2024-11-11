@@ -14,14 +14,16 @@ const generateRandomColors = (count: number) => {
 };
 // Add this new function
 export function getTopJobTitles(contacts: Contact[], limit: number = 5) {
-  // Create a frequency map of job titles
+  console.log('Processing job titles for', contacts.length, 'contacts');
+
   const jobCount = contacts.reduce((acc, contact) => {
     const jobTitle = contact.JOB_TITLE?.trim() || 'Not Specified';
     acc[jobTitle] = (acc[jobTitle] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
-  // Convert to array, sort by count, and take top N
+  console.log('Job count map:', jobCount);
+
   return Object.entries(jobCount)
     .sort(([, a], [, b]) => b - a)
     .slice(0, limit)
