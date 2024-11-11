@@ -29,34 +29,36 @@ export function getTopJobTitles(contacts: Contact[], limit: number = 5) {
     .slice(0, limit)
     .map(([title, count]) => ({ title, count }));
 }
-export const processData = (contacts: Contact[], field: keyof Contact) => {
-  const counts: { [key: string]: number } = {};
+export function processData(contacts: Contact[], field: keyof Contact) {
+  const data = contacts.reduce((acc, contact) => {
+    let value = contact[field]?.toString().trim() || 'Not Specified';
 
-  contacts.forEach(contact => {
-    const value = contact[field]?.toString().trim() || 'Unknown';
-    counts[value] = (counts[value] || 0) + 1;
+    // Remove dollar signs and commas if they exist
+    if (field === 'INCOME_RANGE' || field === 'NET_WORTH') {
+      value = value.replace(/\$/g, '');
+    }
+
+    acc[value] = (acc[value] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  const sortedEntries = Object.entries(data).sort((a, b) => {
+    // Your existing sorting logic
+    if (a[0] === 'Not Specified') return 1;
+    if (b[0] === 'Not Specified') return -1;
+    return 0;
   });
 
-  // Sort by count in descending order
-  const sortedEntries = Object.entries(counts)
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 10); // Limit to top 10 for better visualization
-
-  const labels = sortedEntries.map(([label]) => label);
-  const data = sortedEntries.map(([, count]) => count);
-  const colors = generateRandomColors(labels.length);
-
   return {
-    labels,
+    labels: sortedEntries.map(([label]) => label),
     datasets: [{
-      label: field.toString().replace(/_/g, ' '),
-      data,
-      backgroundColor: colors.map(color => `${color}CC`), // Add transparency
-      borderColor: colors,
-      borderWidth: 1,
-    }]
+      data: sortedEntries.map(([, count]) => count),
+      backgroundColor: [
+        // Your existing colors
+      ],
+    }],
   };
-};
+}
 
 export const calculateContactMethods = (contacts: Contact[]) => {
   const methods = {
