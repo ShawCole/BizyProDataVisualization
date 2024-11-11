@@ -76,7 +76,7 @@ const barOptions = {
         font: {
           size: 11,
         },
-        callback: (value: number) => formatNumber(value), // Format y-axis labels
+        callback: (value: number) => value.toLocaleString(),
       },
       beginAtZero: true,
     },
