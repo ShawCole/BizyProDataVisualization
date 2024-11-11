@@ -9,6 +9,8 @@ import StatCard from './components/StatCard';
 import ContactMethodCard from './components/ContactMethodCard';
 import { processData, calculateStats } from './utils/chartHelpers';
 import type { Contact } from './types';
+import { Briefcase2 } from 'lucide-react';  // For the icon
+
 
 function App() {
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -87,6 +89,36 @@ function App() {
                   total={contacts.length}
                   icon={PhoneCall}
                 /> */}
+                <div className="bg-white rounded-lg shadow p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-medium text-gray-900">Top Job Titles</h3>
+                    <Briefcase2 className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <div className="space-y-2">
+                    {getTopJobTitles(contacts, 5).map((job, index, array) => {
+                      // Calculate the width percentage based on the highest count
+                      const maxCount = array[0].count;
+                      const widthPercentage = (job.count / maxCount) * 100;
+
+                      return (
+                        <div key={job.title} className="flex items-center justify-between">
+                          <div className="text-sm truncate flex-1 relative z-10" title={job.title}>
+                            <div
+                              className="absolute inset-y-0 left-0 bg-blue-100 -z-10"
+                              style={{ width: `${widthPercentage}%` }}
+                            />
+                            <span className="pl-1">
+                              {index + 1}. {job.title}
+                            </span>
+                          </div>
+                          <div className="text-xs text-gray-500 ml-2">
+                            {job.count}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
                 <ContactMethodCard
                   title="Personal Emails"
                   count={contactMethods?.personalEmails || 0}
