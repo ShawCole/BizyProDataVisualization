@@ -38,6 +38,9 @@ const baseOptions = {
       labels: {
         padding: 20,
         usePointStyle: true,
+        font: {
+          size: 10, // Reduce font size for legend labels
+        },
       },
     },
     tooltip: {
