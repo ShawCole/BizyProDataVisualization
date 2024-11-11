@@ -9,14 +9,9 @@ import StatCard from './components/StatCard';
 import ContactMethodCard from './components/ContactMethodCard';
 import { processData, calculateStats } from './utils/chartHelpers';
 import type { Contact } from './types';
-import { Briefcase } from 'lucide-react';  // Replace Briefcase2 with Briefcase
-
 
 function App() {
   const [contacts, setContacts] = useState<Contact[]>([]);
-
-  console.log('Contacts length:', contacts.length);
-  console.log('First contact:', contacts[0]);
 
   const stats = useMemo(() => {
     if (contacts.length === 0) return null;
@@ -32,13 +27,6 @@ function App() {
       // directPhones: contacts.filter(c => c.DIRECT_PHONE?.trim()).length,
       linkedin: contacts.filter(c => c.LINKEDIN_URL?.trim()).length,
     };
-  }, [contacts]);
-
-  const topJobs = useMemo(() => {
-    if (contacts.length === 0) return [];
-    const result = getTopJobTitles(contacts, 5);
-    console.log('Top Jobs:', result);
-    return result;
   }, [contacts]);
 
   return (
@@ -93,42 +81,12 @@ function App() {
                   total={contacts.length}
                   icon={Smartphone}
                 />
-                {/* <ContactMethodCard
+                <ContactMethodCard
                   title="Direct Numbers"
                   count={contactMethods?.directPhones || 0}
                   total={contacts.length}
                   icon={PhoneCall}
-                /> */}
-                <div className="bg-white rounded-lg shadow p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-medium text-gray-900">Top Job Titles</h3>
-                    <Briefcase className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <div className="space-y-2">
-                    {console.log('Top Jobs:', topJobs)}
-                    {topJobs.map((job, index, array) => {
-                      const maxCount = array[0].count;
-                      const widthPercentage = (job.count / maxCount) * 100;
-
-                      return (
-                        <div key={job.title} className="relative p-2">
-                          <div
-                            className="absolute inset-y-0 left-0 bg-blue-100"
-                            style={{ width: `${widthPercentage}%` }}
-                          />
-                          <div className="flex justify-between relative z-10">
-                            <span className="text-sm">
-                              {index + 1}. {job.title}
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              {job.count}
-                            </span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
+                />
                 <ContactMethodCard
                   title="Personal Emails"
                   count={contactMethods?.personalEmails || 0}
@@ -158,38 +116,31 @@ function App() {
                   title="City Distribution"
                   data={processData(contacts, 'PERSONAL_CITY')}
                   type="doughnut"
-                  titleFontSize={15}
                 />
                 <ChartCard
                   title="Age Range Distribution"
                   data={processData(contacts, 'AGE_RANGE')}
                   type="doughnut"
-                  titleFontSize={15}
                 />
                 <ChartCard
                   title="Income Range Distribution"
                   data={processData(contacts, 'INCOME_RANGE')}
                   type="doughnut"
-                  titleFontSize={15}
-                  legendFontSize={10}
                 />
                 <ChartCard
                   title="Credit Rating Distribution"
                   data={processData(contacts, 'SKIPTRACE_CREDIT_RATING')}
                   type="doughnut"
-                  titleFontSize={15}
                 />
                 <ChartCard
                   title="Net Worth Distribution"
                   data={processData(contacts, 'NET_WORTH')}
                   type="doughnut"
-                  titleFontSize={15}
                 />
                 <ChartCard
                   title="Gender Distribution"
                   data={processData(contacts, 'GENDER')}
                   type="doughnut"
-                  titleFontSize={15}
                 />
               </div>
             </section>
