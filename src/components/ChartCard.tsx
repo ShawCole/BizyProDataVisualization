@@ -11,6 +11,7 @@ import {
   ArcElement,
 } from 'chart.js';
 import type { ChartData } from '../types';
+import { formatNumber } from '../utils/chartHelpers';
 
 ChartJS.register(
   CategoryScale,
@@ -73,8 +74,18 @@ const barOptions = {
         font: {
           size: 11,
         },
+        callback: (value: number) => formatNumber(value), // Format y-axis labels
       },
       beginAtZero: true,
+    },
+  },
+  plugins: {
+    ...baseOptions.plugins,
+    tooltip: {
+      ...baseOptions.plugins.tooltip,
+      callbacks: {
+        label: (context: any) => formatNumber(context.raw), // Format tooltip labels
+      },
     },
   },
 };
@@ -92,6 +103,15 @@ const doughnutOptions = {
       display: false,
       grid: {
         display: false,
+      },
+    },
+  },
+  plugins: {
+    ...baseOptions.plugins,
+    tooltip: {
+      ...baseOptions.plugins.tooltip,
+      callbacks: {
+        label: (context: any) => formatNumber(context.raw), // Format tooltip labels
       },
     },
   },

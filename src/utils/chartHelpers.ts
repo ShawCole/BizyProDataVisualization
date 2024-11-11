@@ -5,7 +5,7 @@ const generateRandomColors = (count: number) => {
     '#60A5FA', '#34D399', '#F472B6', '#A78BFA', '#FBBF24',
     '#4B5563', '#EC4899', '#8B5CF6', '#10B981', '#3B82F6'
   ];
-  
+
   const result = [];
   for (let i = 0; i < count; i++) {
     result.push(colors[i % colors.length]);
@@ -15,7 +15,7 @@ const generateRandomColors = (count: number) => {
 
 export const processData = (contacts: Contact[], field: keyof Contact) => {
   const counts: { [key: string]: number } = {};
-  
+
   contacts.forEach(contact => {
     const value = contact[field]?.toString().trim() || 'Unknown';
     counts[value] = (counts[value] || 0) + 1;
@@ -65,13 +65,23 @@ export const calculateContactMethods = (contacts: Contact[]) => {
   };
 };
 
+// chartHelpers.ts
+export const formatNumber = (value: number): string => {
+  if (value >= 1_000_000) {
+    return `$${(value / 1_000_000).toFixed(1)}M`; // Format as millions
+  } else if (value >= 1_000) {
+    return `$${(value / 1_000).toFixed(1)}k`; // Format as thousands
+  }
+  return `$${value.toFixed(0)}`; // No formatting if less than 1,000
+};
+
 export const calculateStats = (contacts: Contact[]) => {
   const uniqueCities = new Set(contacts.map(c => c.PERSONAL_CITY?.trim()).filter(Boolean)).size;
-  
-  const emailCount = contacts.filter(c => 
+
+  const emailCount = contacts.filter(c =>
     c.PERSONAL_EMAIL?.trim() || c.BUSINESS_EMAIL?.trim()
   ).length;
-  
+
   const phoneCount = contacts.filter(c =>
     c.MOBILE_PHONE?.trim() || c.DIRECT_PHONE?.trim()
   ).length;
