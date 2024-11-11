@@ -128,7 +128,7 @@ function App() {
                   title="Income Range Distribution"
                   data={processData(contacts, 'INCOME_RANGE')}
                   type="doughnut"
-                  titleFontSize={10}
+                  titleFontSize={7}
                 />
                 <ChartCard
                   title="Credit Rating Distribution"
